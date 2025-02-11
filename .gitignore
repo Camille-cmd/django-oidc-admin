@@ -1,0 +1,10 @@
+.python-version
+.env
+.idea
+__pycache__/
+TestDatabase
+DMOCTestDatabase
+DMOCTestDatabase.sqlite
+TestDatabase.sqlite3
+dist/
+django_mozilla_oidc_custom.egg-info/
