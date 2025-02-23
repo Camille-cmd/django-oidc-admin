@@ -55,11 +55,10 @@ After activation, the user can log in using the SSO login button.
    
    # Not mandatory, but if needed, to add the user in a group (group will be created if not existing)
    DOIDCADMIN_NEW_USER_GROUP_NAME = "users"
-
    # Custom settings
-   DMOC_NEW_USER_GROUP_NAME = os.environ.get("NAME_GROUP_USER_TO_ADD_TO")
    LOGIN_REDIRECT_URL = "admin:index"
-   LOGIN_REDIRECT_URL_FAILURE = "admin:index"
+   # The login will fail as the user is not automatically set to active, we need to redirect to the admin.
+   LOGIN_REDIRECT_URL_FAILURE = "admin:index" 
 
    # Override the OIDC callback class to use the custom one
    OIDC_CALLBACK_CLASS = "django_oidc_admin.authentication.DjangoOIDCAdminCallbackView"

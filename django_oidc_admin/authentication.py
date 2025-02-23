@@ -1,3 +1,5 @@
+import logging
+
 from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -5,7 +7,9 @@ from mozilla_django_oidc.auth import OIDCAuthenticationBackend
 from django.contrib.auth.models import User, Group
 from mozilla_django_oidc.views import OIDCAuthenticationCallbackView
 from django.utils.translation import gettext as _
+from django.db import IntegrityError
 
+logger = logging.getLogger(__name__)
 
 class DjangoOIDCAdminBackend(OIDCAuthenticationBackend):
     """
@@ -24,12 +28,19 @@ class DjangoOIDCAdminBackend(OIDCAuthenticationBackend):
         username = claims.get("preferred_username", email)
         name = claims.get("name", "")
         given_name = claims.get("given_name", "")
-        user = User.objects.create_user(
-            username=username, first_name=given_name, last_name=name, email=email, is_active=False
-        )
+        try:
+            user = User.objects.create_user(
+                username=username, first_name=given_name, last_name=name, email=email, is_active=False
+            )
+        except IntegrityError as e:
+            logger.warning(f"User can not be created with username {username} -> {e}")
+            # If duplicated username, fallback to the email as username
+            user = User.objects.create_user(
+                username=email, first_name=given_name, last_name=name, email=email, is_active=False
+            )
 
         # Add user to Users groups
-        if settings.DMOC_NEW_USER_GROUP_NAME is not None:
+        if settings.DOIDCADMIN_NEW_USER_GROUP_NAME is not None:
             group, created = Group.objects.get_or_create(name=settings.DMOC_NEW_USER_GROUP_NAME)
             user.groups.add(group)
 
