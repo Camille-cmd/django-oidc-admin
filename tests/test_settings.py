@@ -17,7 +17,7 @@ LOGGING_CONFIG = None   # avoids spurious output in tests
 # Application definition
 
 INSTALLED_APPS = [
-    "django_mozilla_oidc_custom",
+    "django_oidc_admin",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,7 +38,7 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    "django_mozilla_oidc_custom.authentication.DjangoMozillaOIDCCustomBackend",  # Authentification OIDC
+    "django_oidc_admin.authentication.DjangoOIDCAdminBackend",  # Authentification OIDC
     "django.contrib.auth.backends.ModelBackend",  # Classic authentification
 )
 
@@ -53,7 +53,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "django_mozilla_oidc_custom.context_processors.admin_navbar"
+                "django_oidc_admin.context_processors.admin_navbar"
             ],
         },
     },
@@ -92,4 +92,4 @@ OIDC_RP_SIGN_ALGO = "RS256"
 DMOC_NEW_USER_GROUP_NAME = "Users"
 # LOGIN_REDIRECT_URL = "admin:index"
 # LOGIN_REDIRECT_URL_FAILURE = "admin:index"
-OIDC_CALLBACK_CLASS = "django_mozilla_oidc_custom.authentication.DjangoMozillaOIDCCustomCallbackView"
+OIDC_CALLBACK_CLASS = "django_oidc_admin.authentication.DjangoOIDCAdminCallbackView"

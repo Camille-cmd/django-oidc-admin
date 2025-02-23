@@ -1,17 +1,15 @@
 import unittest
 
-from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.http import HttpRequest
-from django.template import Template, Context
 from django.template.loader import render_to_string
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 
-from django_mozilla_oidc_custom.authentication import DjangoMozillaOIDCCustomBackend, DjangoMozillaOIDCCustomCallbackView
-from django_mozilla_oidc_custom.context_processors import admin_navbar
+from django_oidc_admin.authentication import DjangoOIDCAdminBackend, DjangoOIDCAdminCallbackView
+from django_oidc_admin.context_processors import admin_navbar
 
 User = get_user_model()
 
@@ -35,7 +33,7 @@ class MessagingRequest(HttpRequest):
 class TestDjangoMozillaOIDCCustomBackend(TestCase):
 
     def setUp(self):
-        self.backend = DjangoMozillaOIDCCustomBackend()
+        self.backend = DjangoOIDCAdminBackend()
         self.group = Group.objects.create(name="Users")
         self.claims = {
             "email": "test@example.com",
@@ -73,7 +71,7 @@ class TestDjangoMozillaOIDCCustomBackend(TestCase):
 class TestDjangoMozillaOIDCCustomCallbackView(unittest.TestCase):
 
     def setUp(self):
-        self.callback_view = DjangoMozillaOIDCCustomCallbackView()
+        self.callback_view = DjangoOIDCAdminCallbackView()
         self.factory = RequestFactory()
 
     def test_redirects_to_login_on_login_failure(self):

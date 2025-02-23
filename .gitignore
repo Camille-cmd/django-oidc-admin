@@ -1,5 +1,6 @@
 .python-version
 .env
+./venv
 .idea
 __pycache__/
 TestDatabase
@@ -7,4 +8,4 @@ DMOCTestDatabase
 DMOCTestDatabase.sqlite
 TestDatabase.sqlite3
 dist/
-django_mozilla_oidc_custom.egg-info/
+django_oidc_admin.egg-info/

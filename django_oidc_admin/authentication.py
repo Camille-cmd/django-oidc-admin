@@ -7,7 +7,7 @@ from mozilla_django_oidc.views import OIDCAuthenticationCallbackView
 from django.utils.translation import gettext as _
 
 
-class DjangoMozillaOIDCCustomBackend(OIDCAuthenticationBackend):
+class DjangoOIDCAdminBackend(OIDCAuthenticationBackend):
     """
     Custom OIDC backend to manage the user creation and filtering.
     """
@@ -45,11 +45,11 @@ class DjangoMozillaOIDCCustomBackend(OIDCAuthenticationBackend):
         return self.UserModel.objects.filter(email=email)
 
 
-class DjangoMozillaOIDCCustomCallbackView(OIDCAuthenticationCallbackView):
+class DjangoOIDCAdminCallbackView(OIDCAuthenticationCallbackView):
     """
     Custom OIDC callback view to manage the user login failure and redirection to the login page.
 
-    We do not authenticate the user right away, we let the admin validate the account first.
+    We do not authenticate the user right away, we let the admin user validate the account first.
     As the user is not active by default, the authentication will fail and the user
     will be redirected to the login page.
 

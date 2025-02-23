@@ -1,1 +1,0 @@
-recursive-include django_mozilla_oidc_custom/templates *

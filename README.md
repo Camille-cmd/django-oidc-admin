@@ -1,6 +1,6 @@
 # Django Mozilla OIDC Custom
 
-`django-mozilla-oidc-custom` is a Django app that adds a custom login button to the Django admin login page using `django-mozilla-oidc`.
+`django-oidc-admin` is a Django app that adds a custom login button to the Django admin login page using `django-mozilla-oidc`.
 It does not allow direct authentication on the first SSO login but instead creates an **inactive user**.
 The administrator must activate the user in the Django admin interface.
 
@@ -8,13 +8,13 @@ After activation, the user can log in using the SSO login button.
 
 ## Quick Start
 
-1. Add `"django_mozilla_oidc_custom"` to your `INSTALLED_APPS` setting.  
+1. Add `django_oidc_admin"` to your `INSTALLED_APPS` setting.  
    It must be **before** `"django.contrib.admin"`.
 
    ```python
    INSTALLED_APPS = [
        ...,
-       "django_mozilla_oidc_custom",
+       "django_oidc_admin",
        "django.contrib.admin",
        ...,
    ]
@@ -26,24 +26,24 @@ After activation, the user can log in using the SSO login button.
 
    # Required settings
    AUTHENTICATION_BACKENDS = (
-       "django_mozilla_oidc_custom.authentication.DjangoMozillaOIDCCustomBackend",  # Authentication OIDC
+       "django_oidc_admin.authentication.DjangoOIDCAdminBackend",  # Authentication OIDC
        "django.contrib.auth.backends.ModelBackend",  # Classic authentication
    )
 
    # Add the admin_navbar context processor to templates settings
    TEMPLATES = [
        {
-           "DIRS": [BASE_DIR / "templates"],
+           "DIRS": [],
            "APP_DIRS": True,
            "OPTIONS": {
                "context_processors": [
-                   "django_mozilla_oidc_custom.context_processors.admin_navbar",
+                   "django_oidc_admin.context_processors.admin_navbar",
                ],
            },
        },
    ]
 
-   # Mozilla Django OIDC settings
+   # Mozilla Django OIDC mandatory settings
    OIDC_RP_CLIENT_ID = os.environ["OIDC_RP_CLIENT_ID"]
    OIDC_RP_CLIENT_SECRET = os.environ["OIDC_RP_CLIENT_SECRET"]
    OIDC_RP_SCOPES = "openid email profile"
@@ -52,6 +52,9 @@ After activation, the user can log in using the SSO login button.
    OIDC_OP_USER_ENDPOINT = os.environ["OIDC_OP_USER_ENDPOINT"]
    OIDC_OP_JWKS_ENDPOINT = os.environ["OIDC_OP_JWKS_ENDPOINT"]
    OIDC_RP_SIGN_ALGO = os.environ.get("OIDC_RP_SIGN_ALGO", "RS256")
+   
+   # Not mandatory, but if needed, to add the user in a group (group will be created if not existing)
+   DOIDCADMIN_NEW_USER_GROUP_NAME = "users"
 
    # Custom settings
    DMOC_NEW_USER_GROUP_NAME = os.environ.get("NAME_GROUP_USER_TO_ADD_TO")
@@ -59,7 +62,7 @@ After activation, the user can log in using the SSO login button.
    LOGIN_REDIRECT_URL_FAILURE = "admin:index"
 
    # Override the OIDC callback class to use the custom one
-   OIDC_CALLBACK_CLASS = "django_mozilla_oidc_custom.authentication.DjangoMozillaOIDCCustomCallbackView"
+   OIDC_CALLBACK_CLASS = "django_oidc_admin.authentication.DjangoOIDCAdminCallbackView"
    ```
 
 3. Include the app's URL configuration in `urls.py`:
@@ -68,7 +71,7 @@ After activation, the user can log in using the SSO login button.
    from django.urls import path, include
 
    urlpatterns = [
-       path("oidc/", include("django_mozilla_oidc_custom.urls")),
+       path("oidc/", include("django_oidc_admin.urls")),
    ]
    ```
 
