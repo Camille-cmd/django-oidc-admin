@@ -41,7 +41,7 @@ class DjangoOIDCAdminBackend(OIDCAuthenticationBackend):
 
         # Add user to Users groups
         if settings.DOIDCADMIN_NEW_USER_GROUP_NAME is not None:
-            group, created = Group.objects.get_or_create(name=settings.DMOC_NEW_USER_GROUP_NAME)
+            group, created = Group.objects.get_or_create(name=settings.DOIDCADMIN_NEW_USER_GROUP_NAME)
             user.groups.add(group)
 
         return user
