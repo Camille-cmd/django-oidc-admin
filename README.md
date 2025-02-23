@@ -1,4 +1,4 @@
-# Django Mozilla OIDC Custom
+# Django OIDC Addmin
 
 `django-oidc-admin` is a Django app that adds a custom login button to the Django admin login page using `django-mozilla-oidc`.
 It does not allow direct authentication on the first SSO login but instead creates an **inactive user**.
