@@ -4,7 +4,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import redirect
 from mozilla_django_oidc.auth import OIDCAuthenticationBackend
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
+from django.contrib.auth import get_user_model
 from mozilla_django_oidc.views import OIDCAuthenticationCallbackView
 from django.utils.translation import gettext as _
 from django.db import IntegrityError
@@ -29,13 +30,13 @@ class DjangoOIDCAdminBackend(OIDCAuthenticationBackend):
         name = claims.get("name", "")
         given_name = claims.get("given_name", "")
         try:
-            user = User.objects.create_user(
+            user = get_user_model().objects.create_user(
                 username=username, first_name=given_name, last_name=name, email=email, is_active=False
             )
         except IntegrityError as e:
             logger.warning(f"User can not be created with username {username} -> {e}")
             # If duplicated username, fallback to the email as username
-            user = User.objects.create_user(
+            user = get_user_model().objects.create_user(
                 username=email, first_name=given_name, last_name=name, email=email, is_active=False
             )
 
