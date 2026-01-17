@@ -1,5 +1,7 @@
 # Django OIDC Addmin
 
+[![PyPI version](https://img.shields.io/pypi/v/django-oidc-admin.svg)](https://pypi.org/project/django-oidc-admin/)
+
 `django-oidc-admin` is a Django app that adds a custom login button to the Django admin login page using `django-mozilla-oidc`.
 It does not allow direct authentication on the first SSO login but instead creates an **inactive user**.
 The administrator must activate the user in the Django admin interface.
@@ -62,6 +64,9 @@ After activation, the user can log in using the SSO login button.
 
    # Override the OIDC callback class to use the custom one
    OIDC_CALLBACK_CLASS = "django_oidc_admin.authentication.DjangoOIDCAdminCallbackView"
+   
+   # Optional : override to use a custom User model list view
+   OIDCADMIN_USER_LIST_URL_NAME = "admin:auth_user_changelist"
    ```
 
 3. Include the app's URL configuration in `urls.py`:
